@@ -50,7 +50,7 @@ export const Cart: React.FC<CartProps> = (props): JSX.Element => {
 				</Typography>
 				<Box component="div">
 					<Button className={classes.emptyButton} size="large" type="button" variant="contained" color="secondary" onClick={emptyCartHandler} >Empty cart</Button>
-					<Button className={classes.checkoutButton} size="large" type="button" variant="contained" color="primary" >Check out</Button>
+					<Button component={Link} to="/checkout" className={classes.checkoutButton} size="large" type="button" variant="contained" color="primary">Check out</Button>
 				</Box>
 			</Box>
 		</>

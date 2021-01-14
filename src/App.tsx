@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Route, Switch } from 'react-router-dom';
 import { Products, NavBar, Cart } from './components/'
+import { Checkout } from './components/Checkout';
 import { IProduct } from './components/Products';
 import { commerceInstance } from './lib'
 
@@ -77,6 +78,9 @@ export const App: React.FC = (): JSX.Element => {
 						removeItemFromCartHandler={removeItemFromCartHandler}
 						emptyCartHandler={emptyCartHandler}
 					/>
+				</Route>
+				<Route exact path="/checkout">
+					<Checkout />
 				</Route>
 			</Switch>
 		</>
