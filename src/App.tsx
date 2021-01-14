@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Route, Switch } from 'react-router-dom';
 import { Products, NavBar, Cart } from './components/'
 import { IProduct } from './components/Products';
 import { commerceInstance } from './lib'
@@ -51,8 +52,14 @@ export const App: React.FC = (): JSX.Element => {
 	return (
 		<>
 			<NavBar totatItemsInBasket={cart !== undefined && cart.total_items} />
-			{/* <Products prods={products} onAddItem={addItemInBasketHandkler} /> */}
-			{<Cart cart={cart !== undefined && cart} />}
+			<Switch>
+				<Route exact path="/" >
+					<Products prods={products} onAddItem={addItemInBasketHandkler} />
+				</Route>
+				<Route exact path="/cart">
+					<Cart cart={cart !== undefined && cart} />
+				</Route>
+			</Switch>
 		</>
 	)
 }
