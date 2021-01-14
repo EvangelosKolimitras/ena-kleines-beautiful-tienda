@@ -10,8 +10,7 @@ export const App: React.FC = (): JSX.Element => {
 
 	const fetchProducts = async () => {
 		const { data } = await commerceInstance.products.list();
-		console.log(data);
-		let cache: any = []
+		let cache: IProduct[] = []
 
 		// Reshape the data to match our schema
 		for (let i of data) {
@@ -24,7 +23,6 @@ export const App: React.FC = (): JSX.Element => {
 			})
 		}
 		setProducts(cache)
-
 	}
 
 	useEffect(() => {

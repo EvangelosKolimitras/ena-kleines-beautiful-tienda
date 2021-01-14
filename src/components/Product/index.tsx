@@ -21,9 +21,7 @@ const Product: React.FC<ProductProps> = (props) => {
 						{price}€
 					</Typography>
 				</Box>
-				<Typography variant="body2" color="textSecondary">
-					{description}
-				</Typography>
+				<Typography dangerouslySetInnerHTML={{ __html: description }} variant="body2" color="textSecondary" />
 				<CardActions disableSpacing className={classes.cardActions}>
 					<IconButton aria-label="Add to Cart">
 						<AddShoppingCart />
