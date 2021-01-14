@@ -6,12 +6,12 @@ import { IProduct } from '../Products'
 
 interface ProductProps { product: IProduct }
 const Product: React.FC<ProductProps> = (props) => {
-	const { product: { name, description, price } } = props
+	const { product: { name, description, price, image } } = props
 	const classes = useStyles()
 
 	return (
 		<Card className={classes.root}>
-			<CardMedia className={classes.media} image="" title={name} />
+			<CardMedia className={classes.media} image={image} title={name} />
 			<CardContent>
 				<Box component="div" className={classes.cardContent}>
 					<Typography variant="h5" gutterBottom>
