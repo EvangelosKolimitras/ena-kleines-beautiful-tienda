@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Products, NavBar } from './components/'
+import { Products, NavBar, Cart } from './components/'
 import { IProduct } from './components/Products';
 import { commerceInstance } from './lib'
 
@@ -11,6 +11,7 @@ export const App: React.FC = (): JSX.Element => {
 	interface initialValue {
 		total_items: number
 	}
+
 	const [cart, setCart] = useState(initialValue)
 
 	const addItemInBasketHandkler = async (pID: string, quantity: number) => {
@@ -50,7 +51,8 @@ export const App: React.FC = (): JSX.Element => {
 	return (
 		<>
 			<NavBar totatItemsInBasket={cart !== undefined && cart.total_items} />
-			<Products prods={products} onAddItem={addItemInBasketHandkler} />
+			{/* <Products prods={products} onAddItem={addItemInBasketHandkler} /> */}
+			{<Cart cart={cart !== undefined && cart} />}
 		</>
 	)
 }
