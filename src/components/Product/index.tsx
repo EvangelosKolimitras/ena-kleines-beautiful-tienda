@@ -21,7 +21,7 @@ const Product: React.FC<ProductProps> = (props) => {
 						{price}
 					</Typography>
 				</Box>
-				<Typography variant="h2" color="textSecondary">
+				<Typography variant="body2" color="textSecondary">
 					{description}
 				</Typography>
 				<CardActions disableSpacing className={classes.cardActions}>
