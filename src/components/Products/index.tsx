@@ -1,7 +1,7 @@
-import { Grid } from '@material-ui/core'
+import { Box, Grid } from '@material-ui/core'
 import React from 'react'
 import Product from '../Product'
-
+import { useStyles } from './styles'
 export interface IProduct {
 	id: number
 	name: string
@@ -25,9 +25,14 @@ const renderProducts = (products: TProducts): JSX.Element[] =>
 			</Grid>
 	)
 
-export const Products = () =>
-	<main>
-		<Grid container justify="center" spacing={4}>
-			{renderProducts(products)}
-		</Grid>
-	</main>
+export const Products: React.FC = (): JSX.Element => {
+	const classes = useStyles();
+	return (
+		<main className={classes.content}>
+			<Box component="div" className={classes.toolbar} />
+			<Grid container justify="center" spacing={4}>
+				{renderProducts(products)}
+			</Grid>
+		</main>
+	)
+}

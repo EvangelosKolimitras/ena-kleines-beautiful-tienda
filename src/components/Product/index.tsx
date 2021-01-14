@@ -18,7 +18,7 @@ const Product: React.FC<ProductProps> = (props) => {
 						{name}
 					</Typography>
 					<Typography variant="h5">
-						{price}
+						{price}€
 					</Typography>
 				</Box>
 				<Typography variant="body2" color="textSecondary">

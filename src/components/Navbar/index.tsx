@@ -14,14 +14,14 @@ export const NavBar: React.FC = (): JSX.Element => {
 						<img src={logo} alt="Commerce.js" height="25px" className={classes.image} />
 						EKBT
 					</Typography>
-					<div className="classes.grow" />
-					<div className={classes.menuButton}>
+					<Box component="div" className="classes.grow" />
+					<Box component="div" className={classes.menuButton}>
 						<IconButton aria-label="Show cart items" color="inherit">
 							<Badge badgeContent={2} color="secondary">
 								<ShoppingBasket />
 							</Badge>
 						</IconButton>
-					</div>
+					</Box>
 				</Toolbar>
 			</AppBar>
 		</>
