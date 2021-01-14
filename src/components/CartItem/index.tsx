@@ -2,12 +2,14 @@ import { Box, Button, Card, CardActions, CardContent, CardMedia, Typography } fr
 import React from 'react'
 import { useStyles } from './styles'
 
-interface IItem {
+interface IItemProps {
 	item: any
+	updateCartQuantityHandler: any
+	removeItemFromCartHandler: any
 }
 
-export const CartItem: React.FC<IItem> = (props): JSX.Element => {
-	const { item } = props
+export const CartItem: React.FC<IItemProps> = (props): JSX.Element => {
+	const { item, updateCartQuantityHandler, removeItemFromCartHandler } = props
 	const classes = useStyles()
 	console.log(item);
 
@@ -20,11 +22,11 @@ export const CartItem: React.FC<IItem> = (props): JSX.Element => {
 			</CardContent>
 			<CardActions className={classes.cartActions}>
 				<Box component="div" className={classes.buttons}>
-					<Button type="button" size="small">-</Button>
+					<Button type="button" size="small" onClick={() => updateCartQuantityHandler(item.id, item.quantity - 1)}>-</Button>
 					<Typography>{item.quantity}</Typography>
-					<Button type="button" size="small">+</Button>
+					<Button type="button" size="small" onClick={() => updateCartQuantityHandler(item.id, item.quantity + 1)}>+</Button>
 				</Box>
-				<Button variant='contained' type="button" color="secondary">Remove</Button>
+				<Button variant='contained' type="button" color="secondary" onClick={() => removeItemFromCartHandler(item.id)}>Remove</Button>
 			</CardActions>
 		</Card>
 	)

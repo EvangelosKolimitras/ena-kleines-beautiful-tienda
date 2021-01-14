@@ -13,9 +13,12 @@ interface CartProps {
 			raw: string | number
 		}
 	}
+	updateCartQuantityHandler: any
+	removeItemFromCartHandler: any
+	emptyCartHandler: any
 }
 export const Cart: React.FC<CartProps> = (props): JSX.Element => {
-	const { cart } = props
+	const { cart, updateCartQuantityHandler, removeItemFromCartHandler, emptyCartHandler } = props
 
 	const classes = useStyles();
 
@@ -30,7 +33,11 @@ export const Cart: React.FC<CartProps> = (props): JSX.Element => {
 						cart.line_items.map((item: IProduct) => {
 							return (
 								<Grid item xs={12} sm={4} key={cart.id}>
-									<CartItem item={item} />
+									<CartItem
+										item={item}
+										updateCartQuantityHandler={updateCartQuantityHandler}
+										removeItemFromCartHandler={removeItemFromCartHandler}
+									/>
 								</Grid>
 							)
 						}) :
@@ -42,7 +49,7 @@ export const Cart: React.FC<CartProps> = (props): JSX.Element => {
 					Subtotal: {cart.subtotal.raw}€
 				</Typography>
 				<Box component="div">
-					<Button className={classes.emptyButton} size="large" type="button" variant="contained" color="secondary" >Empty cart</Button>
+					<Button className={classes.emptyButton} size="large" type="button" variant="contained" color="secondary" onClick={emptyCartHandler} >Empty cart</Button>
 					<Button className={classes.checkoutButton} size="large" type="button" variant="contained" color="primary" >Check out</Button>
 				</Box>
 			</Box>

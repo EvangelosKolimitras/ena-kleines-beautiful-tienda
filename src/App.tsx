@@ -16,8 +16,23 @@ export const App: React.FC = (): JSX.Element => {
 	const [cart, setCart] = useState(initialValue)
 
 	const addItemInBasketHandkler = async (pID: string, quantity: number) => {
-		const item = await commerceInstance.cart.add(pID, quantity)
-		setCart(item.cart)
+		const { cart } = await commerceInstance.cart.add(pID, quantity)
+		setCart(cart)
+	}
+
+	const updateCartQuantityHandler = async (pID: string, quantity: number) => {
+		const { cart } = await commerceInstance.cart.update(pID, { quantity })
+		setCart(cart)
+	}
+
+	const removeItemFromCartHandler = async (pID: string) => {
+		const { cart } = await commerceInstance.cart.remove(pID)
+		setCart(cart)
+	}
+
+	const emptyCartHandler = async () => {
+		const { cart } = await commerceInstance.cart.empty();
+		setCart(cart)
 	}
 
 	const fetchCart = async () => {
@@ -25,7 +40,6 @@ export const App: React.FC = (): JSX.Element => {
 		console.log(items);
 		setCart(items)
 	}
-
 
 	const fetchProducts = async () => {
 		const { data } = await commerceInstance.products.list();
@@ -57,7 +71,12 @@ export const App: React.FC = (): JSX.Element => {
 					<Products prods={products} onAddItem={addItemInBasketHandkler} />
 				</Route>
 				<Route exact path="/cart">
-					<Cart cart={cart !== undefined && cart} />
+					<Cart
+						cart={cart !== undefined && cart}
+						updateCartQuantityHandler={updateCartQuantityHandler}
+						removeItemFromCartHandler={removeItemFromCartHandler}
+						emptyCartHandler={emptyCartHandler}
+					/>
 				</Route>
 			</Switch>
 		</>
