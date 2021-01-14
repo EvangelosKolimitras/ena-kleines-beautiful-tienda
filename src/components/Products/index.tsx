@@ -25,11 +25,9 @@ const renderProducts = (products: TProducts): JSX.Element[] =>
 			</Grid>
 	)
 
-const Products = () =>
+export const Products = () =>
 	<main>
 		<Grid container justify="center" spacing={4}>
 			{renderProducts(products)}
 		</Grid>
 	</main>
-
-export default Products
