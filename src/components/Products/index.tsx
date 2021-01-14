@@ -1,25 +1,26 @@
 import { Grid } from '@material-ui/core'
 import React from 'react'
+import Product from '../Product'
 
 export interface IProduct {
 	id: number
 	name: string
 	description: string
+	price: string
 }
 
 type TProducts = Array<IProduct>
 
 const products: TProducts = [
-	{ id: 1, name: "Shoes", description: "Casual shoes" },
-	{ id: 2, name: "Pc", description: "An iMac" },
+	{ id: 1, name: "Shoes", description: "Casual shoes", price: "92" },
+	{ id: 2, name: "Pc", description: "An iMac", price: "599" },
 ]
 
 const renderProducts = (products: TProducts): JSX.Element[] =>
 	products.map(
 		(product: IProduct) =>
 			<Grid key={product.id} item xs={12} sm={6} md={4} lg={3}>
-				<h1>{product.name}</h1>
-				<p>{product.description}</p>
+				<Product product={product} />
 			</Grid>
 	)
 
