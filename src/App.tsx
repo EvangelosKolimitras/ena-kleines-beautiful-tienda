@@ -7,6 +7,15 @@ export const App: React.FC = (): JSX.Element => {
 
 	const initialValue: any = []
 	const [products, setProducts] = useState(initialValue);
+	const [cart, setCart] = useState({})
+
+	const addItemInBasketHandkler = async (pID: string, quantity: number) => {
+		const item = await commerceInstance.cart.add(pID, quantity)
+		setCart(item.cart)
+	}
+
+	const fetchCart = async () =>
+		setCart(await commerceInstance.cart.retrieve())
 
 	const fetchProducts = async () => {
 		const { data } = await commerceInstance.products.list();
@@ -29,10 +38,15 @@ export const App: React.FC = (): JSX.Element => {
 		fetchProducts()
 	}, [])
 
+	useEffect(() => {
+		fetchCart()
+	}, [])
+	console.log(cart);
+
 	return (
 		<>
 			<NavBar />
-			<Products prods={products} />
+			<Products prods={products} onAddItem={addItemInBasketHandkler} />
 		</>
 	)
 }

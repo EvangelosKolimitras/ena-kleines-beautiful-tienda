@@ -4,9 +4,9 @@ import React from 'react'
 import { useStyles } from './styles'
 import { IProduct } from '../Products'
 
-interface ProductProps { product: IProduct }
+interface ProductProps { product: IProduct, onAddItem: any }
 const Product: React.FC<ProductProps> = (props) => {
-	const { product: { name, description, price, image } } = props
+	const { product: { id, name, description, price, image }, onAddItem } = props
 	const classes = useStyles()
 
 	return (
@@ -23,7 +23,7 @@ const Product: React.FC<ProductProps> = (props) => {
 				</Box>
 				<Typography dangerouslySetInnerHTML={{ __html: description }} variant="body2" color="textSecondary" />
 				<CardActions disableSpacing className={classes.cardActions}>
-					<IconButton aria-label="Add to Cart">
+					<IconButton aria-label="Add to Cart" onClick={() => onAddItem(id, 1)}>
 						<AddShoppingCart />
 					</IconButton>
 				</CardActions>

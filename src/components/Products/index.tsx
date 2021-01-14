@@ -13,26 +13,27 @@ export interface IProduct {
 
 type TProducts = Array<IProduct>
 
-const renderProducts = (products: TProducts): JSX.Element[] =>
+const renderProducts = (products: TProducts, onAddItem: Function): JSX.Element[] =>
 	products.map(
 		(product: IProduct) =>
 			<Grid key={product.id} item xs={12} sm={6} md={4} lg={3}>
-				<Product product={product} />
+				<Product product={product} onAddItem={onAddItem} />
 			</Grid>
 	)
 
 interface ProductsProps {
 	prods: IProduct[]
+	onAddItem: Function
 }
 
 export const Products: React.FC<ProductsProps> = (props): JSX.Element => {
 	const classes = useStyles();
-
+	const { onAddItem, prods } = props
 	return (
 		<main className={classes.content}>
 			<Box component="div" className={classes.toolbar} />
 			<Grid container justify="center" spacing={4}>
-				{renderProducts(props.prods)}
+				{renderProducts(prods, onAddItem)}
 			</Grid>
 		</main>
 	)
