@@ -1,1 +1,1 @@
-export { commerce } from './commerce/commerce'
+export { commerceInstance } from './commerce/commerce'

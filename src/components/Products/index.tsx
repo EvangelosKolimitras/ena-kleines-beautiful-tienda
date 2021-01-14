@@ -2,6 +2,7 @@ import { Box, Grid } from '@material-ui/core'
 import React from 'react'
 import Product from '../Product'
 import { useStyles } from './styles'
+
 export interface IProduct {
 	id: number
 	name: string
@@ -25,13 +26,19 @@ const renderProducts = (products: TProducts): JSX.Element[] =>
 			</Grid>
 	)
 
-export const Products: React.FC = (): JSX.Element => {
+interface ProductsProps {
+	prods: IProduct[]
+}
+
+export const Products: React.FC<ProductsProps> = (props): JSX.Element => {
 	const classes = useStyles();
+	console.log(props.prods);
+
 	return (
 		<main className={classes.content}>
 			<Box component="div" className={classes.toolbar} />
 			<Grid container justify="center" spacing={4}>
-				{renderProducts(products)}
+				{renderProducts([...products, ...props.prods])}
 			</Grid>
 		</main>
 	)
