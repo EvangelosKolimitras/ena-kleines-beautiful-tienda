@@ -4,7 +4,12 @@ import React from 'react'
 import logo from '../../assets/shops.png'
 import { useStyles } from "./styles"
 
-export const NavBar: React.FC = (): JSX.Element => {
+interface NavBarProps {
+	totatItemsInBasket: number
+}
+
+export const NavBar: React.FC<NavBarProps> = (props): JSX.Element => {
+	const { totatItemsInBasket } = props
 	const classes = useStyles()
 	return (
 		<>
@@ -17,7 +22,7 @@ export const NavBar: React.FC = (): JSX.Element => {
 					<Box component="div" className="classes.grow" />
 					<Box component="div" className={classes.menuButton}>
 						<IconButton aria-label="Show cart items" color="inherit">
-							<Badge badgeContent={2} color="secondary">
+							<Badge badgeContent={totatItemsInBasket} color="secondary">
 								<ShoppingBasket />
 							</Badge>
 						</IconButton>

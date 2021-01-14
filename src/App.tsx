@@ -7,15 +7,23 @@ export const App: React.FC = (): JSX.Element => {
 
 	const initialValue: any = []
 	const [products, setProducts] = useState(initialValue);
-	const [cart, setCart] = useState({})
+
+	interface initialValue {
+		total_items: number
+	}
+	const [cart, setCart] = useState(initialValue)
 
 	const addItemInBasketHandkler = async (pID: string, quantity: number) => {
 		const item = await commerceInstance.cart.add(pID, quantity)
 		setCart(item.cart)
 	}
 
-	const fetchCart = async () =>
-		setCart(await commerceInstance.cart.retrieve())
+	const fetchCart = async () => {
+		const items = await commerceInstance.cart.retrieve()
+		console.log(items);
+		setCart(items)
+	}
+
 
 	const fetchProducts = async () => {
 		const { data } = await commerceInstance.products.list();
@@ -36,16 +44,12 @@ export const App: React.FC = (): JSX.Element => {
 
 	useEffect(() => {
 		fetchProducts()
-	}, [])
-
-	useEffect(() => {
 		fetchCart()
 	}, [])
-	console.log(cart);
 
 	return (
 		<>
-			<NavBar />
+			<NavBar totatItemsInBasket={cart !== undefined && cart.total_items} />
 			<Products prods={products} onAddItem={addItemInBasketHandkler} />
 		</>
 	)
