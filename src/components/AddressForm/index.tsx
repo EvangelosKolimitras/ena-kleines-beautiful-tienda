@@ -1,6 +1,7 @@
 import { Grid, InputLabel, MenuItem, Select, TextField, Typography, useFormControl } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import { Controller, FormProvider, useForm, useFormContext } from 'react-hook-form'
+import { idText } from 'typescript';
 import { commerceInstance } from '../../lib';
 
 interface IAddressForm {
@@ -9,10 +10,10 @@ interface IAddressForm {
 export const AddressForm: React.FC<IAddressForm> = (props) => {
 	const { checkoutToken } = props
 	const methods = useForm();
-	const [shippingCountries, setShippingCountries] = useState([])
+	const [shippingCountries, setShippingCountries] = useState<any>([])
 	const [shippingCoutry, setShippingCoutry] = useState("")
-	const [shippingSubDivisions, setShippingSubDivisions] = useState([])
-	const [shippingSubDivision, setShippingSubDivision] = useState()
+	const [shippingSubDivisions, setShippingSubDivisions] = useState<any>([])
+	const [shippingSubDivision, setShippingSubDivision] = useState("")
 	const [shippingOptions, setShippingOptions] = useState([])
 	const [shippingOption, setShippingOption] = useState("")
 
@@ -23,14 +24,31 @@ export const AddressForm: React.FC<IAddressForm> = (props) => {
 		setShippingCountries(countries)
 	}
 
-	useEffect(() => {
-		fetchShippingCountries(checkoutToken !== null && checkoutToken.id);
-	}, [])
+	const fetchSubDivisions = async (countryCode: string) => {
+		const { subdivisions } = await commerceInstance.services.localeListSubdivisions(countryCode)
+		setShippingSubDivisions(subdivisions)
+		setShippingSubDivision(Object.keys(subdivisions)[0])
+	}
 
 	const countries = Object.entries(shippingCountries).map(([code, name]: any) => ({
 		id: code,
 		label: name
 	}))
+
+	const subdivisions = Object.entries(shippingSubDivisions).map(([code, name]: any) => {
+		console.log(code, name);
+		return ({
+			id: code,
+			label: name
+		})
+	})
+	useEffect(() => {
+		fetchShippingCountries(checkoutToken !== null && checkoutToken.id);
+	}, [])
+
+	useEffect(() => {
+		shippingCoutry && fetchSubDivisions(shippingCoutry)
+	}, [shippingCoutry])
 
 	return (
 		<>
@@ -57,18 +75,23 @@ export const AddressForm: React.FC<IAddressForm> = (props) => {
 										)
 									})
 								}
-
-							</Select>
-						</Grid>
-						{/* 	<Grid item xs={12} sm={6}>
-							<InputLabel >Shipping Subdivision</InputLabel>
-							<Select value={ } fullWidth onChange={ }>
-								<MenuItem key={ } value={ }>
-									Selectme
-								</MenuItem>
 							</Select>
 						</Grid>
 						<Grid item xs={12} sm={6}>
+							<InputLabel >Shipping Subdivision</InputLabel>
+							<Select value={shippingSubDivision} fullWidth onChange={(e: any) => setShippingSubDivision(e.target.value)}>
+								{
+									subdivisions.map((subDivision: { id: string, label: string }) => {
+										return (
+											<MenuItem key={subDivision.id} value={subDivision.id} >
+												{subDivision.label}
+											</MenuItem>
+										)
+									})
+								}
+							</Select>
+						</Grid>
+						{/*		<Grid item xs={12} sm={6}>
 							<InputLabel >Shipping Options</InputLabel>
 							<Select value={ } fullWidth onChange={ }>
 								<MenuItem key={ } value={ }>
