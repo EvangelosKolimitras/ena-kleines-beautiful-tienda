@@ -148,6 +148,7 @@ const TxTField: React.FC<TxTProps> = (props) => {
 				fullWidth
 				label={label}
 				name={name}
+				defaultValue=""
 			/>
 		</Grid>
 	)
