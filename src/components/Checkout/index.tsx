@@ -17,10 +17,12 @@ export const Checkout: React.FC<ICheckoutProps> = (props): JSX.Element => {
 	const [activeStep, setActiveStep] = useState(0)
 	const initialCheckout = null
 	const [checkoutToken, setCheckoutToken] = useState(initialCheckout)
-
+	const [shippingData, setShippingData] = useState<any>({})
 	const classes = useStyles();
 
-	const Form = () => activeStep === 0 ? <AddressForm checkoutToken={checkoutToken!} /> : <PaymentForm />
+	const Form = () => activeStep === 0 ?
+		<AddressForm checkoutToken={checkoutToken!} next={next} /> :
+		<PaymentForm />
 
 	useEffect(() => {
 		const generatToke = async () => {
@@ -31,6 +33,16 @@ export const Checkout: React.FC<ICheckoutProps> = (props): JSX.Element => {
 		}
 		generatToke()
 	}, [cart])
+
+	const nextStep = () => setActiveStep((prevActiveStep) => prevActiveStep + 1)
+	const backStep = () => setActiveStep((prevActiveStep) => prevActiveStep - 1)
+
+	// The input values in a single object from the AddressForm component
+	const next = (data: object) => {
+		setShippingData(data)
+		nextStep();
+	}
+
 
 	return (
 		<>

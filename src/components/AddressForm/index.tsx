@@ -1,14 +1,16 @@
-import { Grid, InputLabel, MenuItem, Select, TextField, Typography, useFormControl } from '@material-ui/core'
+import { Box, Button, Grid, InputLabel, MenuItem, Select, TextField, Typography, useFormControl } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import { Controller, FormProvider, useForm, useFormContext } from 'react-hook-form'
+import { Link } from 'react-router-dom';
 import { idText } from 'typescript';
 import { commerceInstance } from '../../lib';
 
 interface IAddressForm {
 	checkoutToken: any
+	next: Function
 }
 export const AddressForm: React.FC<IAddressForm> = (props) => {
-	const { checkoutToken } = props
+	const { checkoutToken, next } = props
 	const methods = useForm();
 	const [shippingCountries, setShippingCountries] = useState<any>([])
 	const [shippingCoutry, setShippingCoutry] = useState("")
@@ -71,7 +73,7 @@ export const AddressForm: React.FC<IAddressForm> = (props) => {
 		<>
 			<Typography variant="h6" gutterBottom>Shipping Address</Typography>
 			<FormProvider {...methods}>
-				<form  >
+				<form onSubmit={methods.handleSubmit((data) => next({ ...data, setShippingCoutry, setShippingOption, shippingSubDivision }))}  >
 					<Grid container spacing={3}>
 						<TxTField name="firstName" label="First Name" required />
 						<TxTField name="lastName" label="Last Name" required />
@@ -123,6 +125,10 @@ export const AddressForm: React.FC<IAddressForm> = (props) => {
 							</Select>
 						</Grid>
 					</Grid>
+					<Box component="div" style={{ display: "flex", justifyContent: "space-between", marginTop: 30 }}>
+						<Button component={Link} to="/cart" variant="contained" color="primary" >Back to Cart</Button>
+						<Button type="submit" variant="contained" color="primary" >Next</Button>
+					</Box>
 				</form>
 			</FormProvider>
 		</>
