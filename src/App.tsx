@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Route, Switch } from 'react-router-dom';
+import { createIncrementalCompilerHost } from 'typescript';
 import { Products, NavBar, Cart, Checkout } from './components/'
 import { IProduct } from './components/Products';
 import { commerceInstance } from './lib'
@@ -8,7 +9,8 @@ export const App: React.FC = (): JSX.Element => {
 
 	const initialValue: any = []
 	const [products, setProducts] = useState(initialValue);
-
+	const [order, setOrder] = useState({})
+	const [errorMsg, setErrorMsg] = useState("")
 	interface initialValue {
 		total_items: number
 	}
@@ -40,10 +42,24 @@ export const App: React.FC = (): JSX.Element => {
 		setCart(items)
 	}
 
+	const refreshCard = async () => {
+		const newCard = await commerceInstance.cart.refresh();
+		setCart(newCard)
+	}
+
+	const captureCheckoutHandler = async (checkoutTokenId: string, newOrder: any) => {
+		try {
+			const incomingOrder = await commerceInstance.checkout.capture(checkoutTokenId, newOrder)
+			setOrder(incomingOrder)
+			refreshCard()
+		} catch (error) {
+			setErrorMsg(error.data.error.message)
+		}
+	}
+
 	const fetchProducts = async () => {
 		const { data } = await commerceInstance.products.list();
 		let cache: IProduct[] = []
-
 		// Reshape the data to match our schema
 		for (let i of data) {
 			cache.push(...products, {
@@ -78,7 +94,12 @@ export const App: React.FC = (): JSX.Element => {
 					/>
 				</Route>
 				<Route exact path="/checkout">
-					<Checkout cart={cart} />
+					<Checkout
+						cart={cart}
+						order={order}
+						error={errorMsg}
+						captureCheckoutHandler={captureCheckoutHandler}
+					/>
 				</Route>
 			</Switch>
 		</>

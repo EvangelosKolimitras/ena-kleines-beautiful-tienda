@@ -10,9 +10,12 @@ const steps = ['Shipping address', "Payment details"]
 
 interface ICheckoutProps {
 	cart: any
+	order: any
+	error: string
+	captureCheckoutHandler: any
 }
 export const Checkout: React.FC<ICheckoutProps> = (props): JSX.Element => {
-	const { cart } = props
+	const { cart, captureCheckoutHandler } = props
 
 	const [activeStep, setActiveStep] = useState(0)
 	const [checkoutToken, setCheckoutToken] = useState<null>(null)
@@ -20,8 +23,17 @@ export const Checkout: React.FC<ICheckoutProps> = (props): JSX.Element => {
 	const classes = useStyles();
 
 	const Form = () => activeStep === 0 ?
-		<AddressForm checkoutToken={checkoutToken!} next={next} /> :
-		<PaymentForm shippingData={shippingData} checkoutToken={checkoutToken!} />
+		<AddressForm
+			checkoutToken={checkoutToken!}
+			next={next}
+		/> :
+		<PaymentForm
+			shippingData={shippingData}
+			captureCheckoutHandler={captureCheckoutHandler}
+			checkoutToken={checkoutToken!}
+			backStep={backStep}
+			nextStep={nextStep}
+		/>
 
 	useEffect(() => {
 		const generatToke = async () => {
