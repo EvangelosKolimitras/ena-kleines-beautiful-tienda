@@ -8,6 +8,7 @@ interface IAddressForm {
 	checkoutToken: any
 	next: Function
 }
+
 export const AddressForm: React.FC<IAddressForm> = (props) => {
 	const { checkoutToken, next } = props
 	const methods = useForm();

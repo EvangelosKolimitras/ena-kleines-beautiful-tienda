@@ -2,10 +2,9 @@ import { Box, Paper, Step, StepLabel, Stepper, Typography, Divider, CircularProg
 import React, { useEffect, useState } from 'react'
 import { commerceInstance } from '../../lib'
 import { AddressForm } from '../AddressForm'
-import { Confirmation } from '../Confirmation'
 import { PaymentForm } from '../PaymentForm'
 import { useStyles } from './styles'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
 const steps = ['Shipping address', "Payment details"]
 interface ICheckoutProps {
@@ -21,6 +20,8 @@ export const Checkout: React.FC<ICheckoutProps> = (props): JSX.Element => {
 	const [activeStep, setActiveStep] = useState<number>(0)
 	const [checkoutToken, setCheckoutToken] = useState<null>(null)
 	const [shippingData, setShippingData] = useState<object>({})
+
+	const history = useHistory();
 	const classes = useStyles();
 
 	const Form = () => activeStep === 0 ?
@@ -37,13 +38,15 @@ export const Checkout: React.FC<ICheckoutProps> = (props): JSX.Element => {
 		/>
 
 	useEffect(() => {
-		const generatToke = async () => {
+		const generatToken = async () => {
 			try {
 				const token = await commerceInstance.checkout.generateToken(cart.id, { type: "cart" })
 				setCheckoutToken(token)
-			} catch (error) { }
+			} catch (error) {
+				history.push("/")
+			}
 		}
-		generatToke()
+		generatToken()
 	}, [cart])
 
 	const nextStep = () => setActiveStep((prevActiveStep) => prevActiveStep + 1)
