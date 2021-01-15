@@ -31,7 +31,7 @@ export const PaymentForm: React.FC<IPaymentProps> = (props) => {
 
 		if (!stripe || !elements) return
 
-		const cardElement = elements.getElemet(CardElement)
+		const cardElement = elements.getElement(CardElement)
 
 		const { error, paymentMethod } = await stripe.createPaymentMethod({ type: "card", card: cardElement })
 
