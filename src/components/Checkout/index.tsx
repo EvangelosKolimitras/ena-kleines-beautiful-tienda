@@ -1,16 +1,37 @@
 import { Box, Paper, Step, StepLabel, Stepper, Typography } from '@material-ui/core'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { commerceInstance } from '../../lib'
 import { AddressForm } from '../AddressForm'
 import { Confirmation } from '../Confirmation'
 import { PaymentForm } from '../PaymentForm'
 import { useStyles } from './styles'
 
 const steps = ['Shipping address', "Payment details"]
-export const Checkout: React.FC = (): JSX.Element => {
+
+interface ICheckoutProps {
+	cart: any
+}
+export const Checkout: React.FC<ICheckoutProps> = (props): JSX.Element => {
+	const { cart } = props
+
 	const [activeStep, setActiveStep] = useState(0)
+	const initialCheckout = null
+	const [checkoutToken, setCheckoutToken] = useState(initialCheckout)
+
 	const classes = useStyles();
 
-	const Form = () => activeStep === 0 ? <AddressForm /> : <PaymentForm />
+	const Form = () => activeStep === 0 ? <AddressForm checkoutToken={checkoutToken!} /> : <PaymentForm />
+
+	useEffect(() => {
+		const generatToke = async () => {
+			try {
+				const token = await commerceInstance.checkout.generateToken(cart.id, { type: "cart" })
+				console.log(token);
+				setCheckoutToken(token)
+			} catch (error) { }
+		}
+		generatToke()
+	}, [cart])
 
 	return (
 		<>
@@ -28,7 +49,7 @@ export const Checkout: React.FC = (): JSX.Element => {
 						)}
 					</Stepper>
 					{
-						activeStep === steps.length ? <Confirmation /> : <Form />
+						activeStep === steps.length ? <Confirmation /> : checkoutToken && <Form />
 					}
 				</Paper>
 			</main>

@@ -79,7 +79,7 @@ export const App: React.FC = (): JSX.Element => {
 					/>
 				</Route>
 				<Route exact path="/checkout">
-					<Checkout />
+					<Checkout cart={cart} />
 				</Route>
 			</Switch>
 		</>
