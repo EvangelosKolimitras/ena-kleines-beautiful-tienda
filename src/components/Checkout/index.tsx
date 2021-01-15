@@ -26,7 +26,6 @@ export const Checkout: React.FC<ICheckoutProps> = (props): JSX.Element => {
 		const generatToke = async () => {
 			try {
 				const token = await commerceInstance.checkout.generateToken(cart.id, { type: "cart" })
-				console.log(token);
 				setCheckoutToken(token)
 			} catch (error) { }
 		}

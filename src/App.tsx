@@ -37,7 +37,6 @@ export const App: React.FC = (): JSX.Element => {
 
 	const fetchCart = async () => {
 		const items = await commerceInstance.cart.retrieve()
-		console.log(items);
 		setCart(items)
 	}
 
