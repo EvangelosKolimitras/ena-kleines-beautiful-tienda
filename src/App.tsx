@@ -1,23 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { Route, Switch } from 'react-router-dom';
-import { createIncrementalCompilerHost } from 'typescript';
 import { Products, NavBar, Cart, Checkout } from './components/'
 import { IProduct } from './components/Products';
 import { commerceInstance } from './lib'
 
 export const App: React.FC = (): JSX.Element => {
 
-	const initialValue: any = []
-	const [products, setProducts] = useState(initialValue);
+	const [products, setProducts] = useState<any[]>([]);
 	const [order, setOrder] = useState({})
 	const [errorMsg, setErrorMsg] = useState("")
-	interface initialValue {
-		total_items: number
-	}
+	const [cart, setCart] = useState<any>({})
 
-	const [cart, setCart] = useState(initialValue)
-
-	const addItemInBasketHandkler = async (pID: string, quantity: number) => {
+	const addItemInBasketHandler = async (pID: string, quantity: number) => {
 		const { cart } = await commerceInstance.cart.add(pID, quantity)
 		setCart(cart)
 	}
@@ -42,7 +36,7 @@ export const App: React.FC = (): JSX.Element => {
 		setCart(items)
 	}
 
-	const refreshCard = async () => {
+	const refreshCart = async () => {
 		const newCard = await commerceInstance.cart.refresh();
 		setCart(newCard)
 	}
@@ -51,7 +45,7 @@ export const App: React.FC = (): JSX.Element => {
 		try {
 			const incomingOrder = await commerceInstance.checkout.capture(checkoutTokenId, newOrder)
 			setOrder(incomingOrder)
-			refreshCard()
+			refreshCart()
 		} catch (error) {
 			setErrorMsg(error.data.error.message)
 		}
@@ -83,7 +77,7 @@ export const App: React.FC = (): JSX.Element => {
 			<NavBar totatItemsInBasket={cart !== undefined && cart.total_items} />
 			<Switch>
 				<Route exact path="/" >
-					<Products prods={products} onAddItem={addItemInBasketHandkler} />
+					<Products prods={products} onAddItem={addItemInBasketHandler} />
 				</Route>
 				<Route exact path="/cart">
 					<Cart

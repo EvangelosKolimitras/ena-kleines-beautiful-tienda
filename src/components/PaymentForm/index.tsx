@@ -26,7 +26,7 @@ export const PaymentForm: React.FC<IPaymentProps> = (props) => {
 	let key: string | undefined = process.env.REACT_APP_STRIPE_PUBLIC_KEY
 	const stripePromise: any = loadStripe(key!)
 
-	const submitHandler = async (event: any, elements: any, stripe: any) => {
+	const submitHandler = async (event: any, elements: any, stripe: any): Promise<void> => {
 		event.preventDefault();
 
 		if (!stripe || !elements) return
@@ -48,8 +48,8 @@ export const PaymentForm: React.FC<IPaymentProps> = (props) => {
 				shipping: {
 					name: "Primary",
 					street: shippingData.address1,
-					country_state: shippingData.shippingSubdivision,
-					postal_zip_code: shippingData.zip,
+					country_state: shippingData.shippingSubDivision,
+					postalCode: shippingData.zip,
 					country: shippingData.shippingCountry
 				},
 				fulfillment: {
@@ -62,7 +62,12 @@ export const PaymentForm: React.FC<IPaymentProps> = (props) => {
 					}
 				}
 			}
+
 			captureCheckoutHandler(checkoutToken.id, orderData)
+			console.log(shippingData);
+
+			console.log('before capture', orderData);
+
 			nextStep();
 		}
 	}

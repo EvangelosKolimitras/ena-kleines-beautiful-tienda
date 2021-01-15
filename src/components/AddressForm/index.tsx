@@ -1,8 +1,7 @@
-import { Box, Button, Grid, InputLabel, MenuItem, Select, TextField, Typography, useFormControl } from '@material-ui/core'
+import { Box, Button, Grid, InputLabel, MenuItem, Select, TextField, Typography } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import { Controller, FormProvider, useForm, useFormContext } from 'react-hook-form'
 import { Link } from 'react-router-dom';
-import { idText } from 'typescript';
 import { commerceInstance } from '../../lib';
 
 interface IAddressForm {
@@ -13,7 +12,7 @@ export const AddressForm: React.FC<IAddressForm> = (props) => {
 	const { checkoutToken, next } = props
 	const methods = useForm();
 	const [shippingCountries, setShippingCountries] = useState<any>([])
-	const [shippingCoutry, setShippingCoutry] = useState("")
+	const [shippingCountry, setShippingCountry] = useState("")
 	const [shippingSubDivisions, setShippingSubDivisions] = useState<any>([])
 	const [shippingSubDivision, setShippingSubDivision] = useState("")
 	const [shippingOptions, setShippingOptions] = useState<any>([])
@@ -21,8 +20,8 @@ export const AddressForm: React.FC<IAddressForm> = (props) => {
 
 	const fetchShippingCountries = async (checkoutTokenId: string) => {
 		const { countries } = await commerceInstance.services.localeListShippingCountries(checkoutTokenId)
-		setShippingCoutry(Object.keys(countries)[0])
 		setShippingCountries(countries)
+		setShippingCountry(Object.keys(countries)[0])
 	}
 
 	const fetchSubDivisions = async (countryCode: string) => {
@@ -34,8 +33,6 @@ export const AddressForm: React.FC<IAddressForm> = (props) => {
 	const fetchShippingOptions = async (checkoutTokenId: string, country: string, region: string | null) => {
 		const options = await commerceInstance.checkout.getShippingOptions(checkoutTokenId, { country, region })
 		setShippingOptions(options)
-		console.log(options[0]);
-
 		setShippingOption(options[0].id)
 	}
 
@@ -54,37 +51,35 @@ export const AddressForm: React.FC<IAddressForm> = (props) => {
 		label: `${shippingOption.description} - (${shippingOption.price.formatted_with_symbol})`
 	}))
 
-
 	useEffect(() => {
-		fetchShippingCountries(checkoutToken !== null && checkoutToken.id);
+		fetchShippingCountries(checkoutToken.id !== null && checkoutToken.id);
 	}, [])
 
 	useEffect(() => {
-		shippingCoutry && fetchSubDivisions(shippingCoutry)
-	}, [shippingCoutry])
+		shippingCountry && fetchSubDivisions(shippingCountry)
+	}, [shippingCountry])
 
 	useEffect(() => {
-		shippingSubDivisions && fetchShippingOptions(checkoutToken.id, shippingCoutry, shippingSubDivision)
-		console.log(options);
-
+		shippingSubDivisions && fetchShippingOptions(checkoutToken.id, shippingCountry, shippingSubDivision)
 	}, [shippingSubDivision])
 
 	return (
 		<>
 			<Typography variant="h6" gutterBottom>Shipping Address</Typography>
 			<FormProvider {...methods}>
-				<form onSubmit={methods.handleSubmit((data) => next({ ...data, setShippingCoutry, setShippingOption, shippingSubDivision }))}  >
+				<form onSubmit={methods.handleSubmit(
+					(data: any) => next({ ...data, shippingCountry, shippingOption, shippingSubDivision }))}  >
 					<Grid container spacing={3}>
 						<TxTField name="firstName" label="First Name" required />
 						<TxTField name="lastName" label="Last Name" required />
-						<TxTField name="address" label="Address" required />
+						<TxTField name="address1" label="Address" required />
 						<TxTField name="email" label="Email" required />
 						<TxTField name="city" label="City" required />
 						<TxTField name="zip" label="Postal code" required />
 
 						<Grid item xs={12} sm={6}>
 							<InputLabel>Shipping Country</InputLabel>
-							<Select value={shippingCoutry} fullWidth onChange={(e: any) => setShippingCoutry(e.target.value)}>
+							<Select value={shippingCountry} fullWidth onChange={(e: any) => setShippingCountry(e.target.value)}>
 								{
 									countries.map((country: { id: string, label: string }) => {
 										return (

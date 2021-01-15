@@ -7,7 +7,6 @@ import { PaymentForm } from '../PaymentForm'
 import { useStyles } from './styles'
 
 const steps = ['Shipping address', "Payment details"]
-
 interface ICheckoutProps {
 	cart: any
 	order: any
@@ -17,7 +16,7 @@ interface ICheckoutProps {
 export const Checkout: React.FC<ICheckoutProps> = (props): JSX.Element => {
 	const { cart, captureCheckoutHandler } = props
 
-	const [activeStep, setActiveStep] = useState(0)
+	const [activeStep, setActiveStep] = useState<number>(0)
 	const [checkoutToken, setCheckoutToken] = useState<null>(null)
 	const [shippingData, setShippingData] = useState<object>({})
 	const classes = useStyles();
@@ -49,7 +48,7 @@ export const Checkout: React.FC<ICheckoutProps> = (props): JSX.Element => {
 	const backStep = () => setActiveStep((prevActiveStep) => prevActiveStep - 1)
 
 	// The input values in a single object from the AddressForm component
-	const next = (data: object) => {
+	const next = (data: Function) => {
 		setShippingData(data)
 		nextStep();
 	}
