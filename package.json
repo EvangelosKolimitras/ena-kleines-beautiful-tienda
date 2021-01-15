@@ -50,5 +50,9 @@
   },
   "devDependencies": {
     "@types/react-router-dom": "^5.1.7"
-  }
+  },
+  "main": "index.js",
+  "repository": "https://github.com/EvangelosKolimitras/ena-kleines-beautiful-tienda.git",
+  "author": "Evangelos Kolimitras <evangeloskolimitras@outlook.com>",
+  "license": "MIT"
 }
