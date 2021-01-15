@@ -15,14 +15,13 @@ export const Checkout: React.FC<ICheckoutProps> = (props): JSX.Element => {
 	const { cart } = props
 
 	const [activeStep, setActiveStep] = useState(0)
-	const initialCheckout = null
-	const [checkoutToken, setCheckoutToken] = useState(initialCheckout)
-	const [shippingData, setShippingData] = useState<any>({})
+	const [checkoutToken, setCheckoutToken] = useState<null>(null)
+	const [shippingData, setShippingData] = useState<object>({})
 	const classes = useStyles();
 
 	const Form = () => activeStep === 0 ?
 		<AddressForm checkoutToken={checkoutToken!} next={next} /> :
-		<PaymentForm />
+		<PaymentForm shippingData={shippingData} checkoutToken={checkoutToken!} />
 
 	useEffect(() => {
 		const generatToke = async () => {
