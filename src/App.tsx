@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Route, Switch } from 'react-router-dom';
-import { Products, NavBar, Cart } from './components/'
-import { Checkout } from './components/Checkout';
+import { Products, NavBar, Cart, Checkout } from './components/'
 import { IProduct } from './components/Products';
 import { commerceInstance } from './lib'
 
