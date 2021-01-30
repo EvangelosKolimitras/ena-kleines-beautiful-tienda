@@ -1,4 +1,4 @@
-# ena-kleines-beautiful-tienda
+# Simple shopping
 
 This is a simple online shop created with React and TypeScript.
 
